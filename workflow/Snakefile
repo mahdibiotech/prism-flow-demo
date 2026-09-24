@@ -1,0 +1,44 @@
+from pathlib import Path
+import csv
+
+configfile: "config/config.yaml"
+
+MODE = config["input"]["mode"]
+SAMPLE_SHEET = config["input"]["samples"]
+PATIENT_SHEET = config["input"]["patients"]
+
+if MODE not in {"demo", "fastq"}:
+    raise ValueError("config input.mode must be one of: demo, fastq")
+
+
+def load_samples(path):
+    with open(path, newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle, delimiter="\t"))
+    if not rows:
+        raise ValueError(f"No samples found in {path}")
+    return rows
+
+
+SAMPLE_ROWS = load_samples(SAMPLE_SHEET)
+SAMPLES = [row["sample_id"] for row in SAMPLE_ROWS]
+SAMPLE_BY_ID = {row["sample_id"]: row for row in SAMPLE_ROWS}
+
+Path("logs").mkdir(exist_ok=True)
+Path("benchmarks").mkdir(exist_ok=True)
+Path("provenance/events").mkdir(parents=True, exist_ok=True)
+
+include: "rules/common.smk"
+include: "rules/bulk_rnaseq.smk"
+include: "rules/reporting.smk"
+
+rule all:
+    input:
+        "results/metadata/validation.json",
+        "results/qc/qc_gate.tsv",
+        "results/bulk/deseq2/results_full.tsv",
+        "results/bulk/deseq2/results_significant.tsv",
+        "results/bulk/deseq2/normalized_counts.tsv",
+        "results/bulk/deseq2/pca.png",
+        "results/bulk/deseq2/volcano.png",
+        "results/report/prism_flow_report.html",
+        "provenance/execution_trace.tsv"

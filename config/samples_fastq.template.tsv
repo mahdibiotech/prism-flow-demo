@@ -1,0 +1,3 @@
+sample_id	patient_id	condition	modality	sample_type	fastq_r1	fastq_r2
+S001	P001	normal	bulk_rnaseq	adjacent_normal	/data/S001_R1.fastq.gz	/data/S001_R2.fastq.gz
+S002	P002	tumor	bulk_rnaseq	tumor	/data/S002_R1.fastq.gz	/data/S002_R2.fastq.gz

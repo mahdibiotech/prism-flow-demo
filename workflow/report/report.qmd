@@ -1,0 +1,78 @@
+---
+title: "PRISM-Flow Processing Report"
+subtitle: "Independent research-use bioinformatics demonstrator"
+format:
+  html:
+    toc: true
+    embed-resources: true
+    code-fold: true
+execute:
+  echo: false
+  warning: false
+  error: false
+---
+
+```{python}
+from pathlib import Path
+import json
+import os
+import pandas as pd
+
+root = Path(os.environ["PRISM_FLOW_ROOT"])
+validation = json.loads((root / "results/metadata/validation.json").read_text())
+qc = pd.read_csv(root / "results/qc/qc_gate.tsv", sep="\t")
+de = pd.read_csv(root / "results/bulk/deseq2/results_full.tsv", sep="\t")
+sig = pd.read_csv(root / "results/bulk/deseq2/results_significant.tsv", sep="\t")
+```
+
+## Scope
+
+This report is produced by an **independent portfolio demonstrator**. It contains synthetic demo data by default and is **not a clinical decision-support report**.
+
+## Run summary
+
+```{python}
+summary = pd.DataFrame({
+    "Metric": ["Metadata status", "Samples", "QC PASS", "QC WARN", "QC FAIL", "Significant DE genes"],
+    "Value": [
+        validation["status"],
+        validation["sample_count"],
+        int((qc["qc_status"] == "PASS").sum()),
+        int((qc["qc_status"] == "WARN").sum()),
+        int((qc["qc_status"] == "FAIL").sum()),
+        len(sig),
+    ],
+})
+summary
+```
+
+## Quality control
+
+```{python}
+qc[["sample_id", "library_size", "detected_genes", "zero_fraction", "qc_status", "qc_reasons"]]
+```
+
+## Differential expression
+
+The analysis compares the configured contrast using DESeq2. Samples marked `FAIL` by the QC gate are excluded before model fitting.
+
+```{python}
+cols = [c for c in ["gene_id", "baseMean", "log2FoldChange", "pvalue", "padj"] if c in de.columns]
+de.sort_values("padj", na_position="last")[cols].head(20)
+```
+
+### PCA
+
+![](../../results/bulk/deseq2/pca.png)
+
+### Volcano plot
+
+![](../../results/bulk/deseq2/volcano.png)
+
+## Reproducibility and traceability
+
+The workflow records software environment files, logs, benchmarks, Git commit (when available), input/output paths and timestamps. The final table is written to `provenance/execution_trace.tsv`.
+
+## Platform extension pattern
+
+The implemented bulk RNA-seq path is the reference modality. New modalities should implement the same contracts: **metadata validation → processing → QC state → provenance → versioned results → reportable summary**.

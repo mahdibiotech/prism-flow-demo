@@ -1,0 +1,40 @@
+project:
+  name: PRISM-Flow-Demo
+  version: 0.1.0
+  analysis_id: demo_2026_09
+
+input:
+  # demo: lightweight synthetic gene counts
+  # fastq: paired-end FASTQ -> FastQC -> Trim Galore -> Salmon -> tximport
+  mode: demo
+  samples: config/samples.tsv
+  patients: config/patients.tsv
+
+reference:
+  organism: Homo sapiens
+  genome_build: GRCh38
+  annotation_release: GENCODE-template
+  # Required only in input.mode=fastq
+  salmon_index: /ABSOLUTE/PATH/TO/SALMON_INDEX
+  tx2gene: /ABSOLUTE/PATH/TO/tx2gene.tsv
+
+analysis:
+  design_column: condition
+  reference_level: normal
+  contrast_level: tumor
+  alpha: 0.05
+  min_abs_log2fc: 1.0
+  seed: 20260924
+  demo_genes: 500
+
+qc:
+  min_library_size_fail: 5000
+  min_library_size_warn: 12000
+  min_detected_genes_fail: 50
+  min_detected_genes_warn: 100
+  max_zero_fraction_warn: 0.80
+
+resources:
+  default_threads: 2
+  salmon_threads: 4
+  mem_mb: 4000

@@ -1,0 +1,12 @@
+# Adapt account/partition/resources to the institution's SLURM configuration.
+executor: slurm
+jobs: 50
+latency-wait: 60
+use-conda: true
+rerun-incomplete: true
+printshellcmds: true
+
+# Example resource mapping. Sites may use different plugin settings.
+default-resources:
+  - mem_mb=4000
+  - runtime=60

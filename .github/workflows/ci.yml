@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  python-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas numpy pyyaml
+      - run: python -m unittest discover -s tests -v
+      - run: |
+          python scripts/validate_metadata.py \
+            --samples config/samples.tsv \
+            --patients config/patients.tsv \
+            --mode demo \
+            --output /tmp/validation.json
+      - run: |
+          python scripts/generate_demo_data.py \
+            --samples config/samples.tsv \
+            --counts /tmp/counts.tsv \
+            --truth /tmp/truth.tsv \
+            --genes 100 --seed 42
+          python scripts/count_qc.py --counts /tmp/counts.tsv --output /tmp/qc.tsv

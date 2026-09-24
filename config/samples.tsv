@@ -1,0 +1,9 @@
+sample_id	patient_id	condition	modality	sample_type	fastq_r1	fastq_r2
+S001	P001	normal	bulk_rnaseq	adjacent_normal		
+S002	P002	normal	bulk_rnaseq	adjacent_normal		
+S003	P003	normal	bulk_rnaseq	adjacent_normal		
+S004	P004	normal	bulk_rnaseq	adjacent_normal		
+S005	P005	tumor	bulk_rnaseq	tumor		
+S006	P006	tumor	bulk_rnaseq	tumor		
+S007	P007	tumor	bulk_rnaseq	tumor		
+S008	P008	tumor	bulk_rnaseq	tumor		

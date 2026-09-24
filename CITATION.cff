@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: "PRISM-Flow Demo"
+message: "If you reuse this portfolio demonstrator, please cite the repository."
+type: software
+authors:
+  - family-names: Attabi
+    given-names: Mahdi
+version: 0.1.0
+date-released: 2026-09-24
+license: MIT

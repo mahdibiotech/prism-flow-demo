@@ -1,0 +1,19 @@
+Bootstrap: docker
+From: mambaorg/micromamba:2.0.5
+
+%labels
+    Author Mahdi Attabi
+    Version 0.1.0
+    Description "PRISM-Flow portfolio demonstrator base container"
+
+%files
+    environment.yml /tmp/environment.yml
+
+%post
+    micromamba create -y -n prism -f /tmp/environment.yml && micromamba clean --all --yes
+
+%environment
+    export PATH=/opt/conda/envs/prism/bin:$PATH
+
+%runscript
+    exec snakemake "$@"

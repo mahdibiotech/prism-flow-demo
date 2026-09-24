@@ -1,0 +1,27 @@
+# Workflow outputs
+results/
+provenance/events/
+logs/
+benchmarks/
+.snakemake/
+
+# Keep directory placeholders
+!results/.gitkeep
+!provenance/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+
+# R
+.Rhistory
+.RData
+.Rproj.user/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
