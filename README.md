@@ -1,5 +1,5 @@
 # PRISM-Flow Demo
-
+[![CI](https://github.com/mahdibiotech/prism-flow-demo/actions/workflows/ci.yml/badge.svg)](https://github.com/mahdibiotech/prism-flow-demo/actions/workflows/ci.yml)
 **A reproducible multi-omics-ready processing and provenance framework for translational bioinformatics.**
 
 > **Independent portfolio project.** This repository is not an official Gustave Roussy or IHU PRISM software product and contains no patient data. It was built as a technical demonstrator for a Junior Bioinformatics Engineer application.
