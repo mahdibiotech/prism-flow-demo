@@ -72,7 +72,12 @@ write_tsv(sig, file.path(outdir, "results_significant.tsv"))
 norm <- counts(dds, normalized = TRUE) %>% as.data.frame() %>% rownames_to_column("gene_id")
 write_tsv(norm, file.path(outdir, "normalized_counts.tsv"))
 
-vsd <- vst(dds, blind = FALSE)
+if (nrow(dds) < 1000) {
+  message("Dataset has fewer than 1000 genes; using varianceStabilizingTransformation()")
+  vsd <- varianceStabilizingTransformation(dds, blind = FALSE)
+} else {
+  vsd <- vst(dds, blind = FALSE)
+}
 pca_df <- plotPCA(vsd, intgroup = design_col, returnData = TRUE)
 percent_var <- round(100 * attr(pca_df, "percentVar"))
 

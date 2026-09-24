@@ -1,6 +1,6 @@
 channels:
-  - bioconda
   - conda-forge
+  - bioconda
 dependencies:
   - r-base=4.4
   - bioconductor-deseq2=1.46

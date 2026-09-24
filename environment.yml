@@ -2,8 +2,9 @@ name: prism-flow
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
   - python=3.11
   - snakemake-minimal>=8,<10
   - pyyaml>=6
+  - pandas=2.2
+  - numpy=2.1
